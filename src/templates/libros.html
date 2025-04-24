@@ -1,0 +1,29 @@
+{% include './cabecera_home.html'%}
+
+{% if libros %}
+<div class="row">
+    {% for libro in libros %}
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <img class="card-img-top" src="{{ libro.imagen }}" alt="Title" />
+            <div class="card-body">
+                <h4 class="card-title">{{ libro.titulo }}</h4>
+                <p class="card-text">{{ libro.descripcion }}</p>
+                <p class="card-text">{{ libro.autor }}</p>
+                <form action="{{ url_for('Agregarlibro')}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" style="display: none;">
+                    <input type="hidden" name="id_libro" value="{{ libro.id }}">
+                    <button type="submit">Obtener libro</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No tienes libros registrados.</p>
+{% endif %}
+
+
+{% include './pie_home.html'%}

@@ -1,0 +1,62 @@
+{% include 'admin/cabecera_admin.html' %}
+
+{% if libros %}
+<div class="row">
+    {% for libro in libros %}
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <img class="card-img-top" src="{{ libro.imagen }}" alt="Portada del libro" />
+            <div class="card-body">
+                <h4 class="card-title">{{ libro.titulo }}</h4>
+                <p class="card-text">{{ libro.descripcion }}</p>
+                <p class="card-text"><strong>Autor:</strong> {{ libro.autor }}</p>
+                
+                {% if current_user.id != 13 %}
+                <!-- Formulario con ID único para cada libro -->
+                <form id="form-{{ libro.id }}" action="{{ url_for('Agregarlibro')}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="id_libro" value="{{ libro.id }}">
+                    
+                    <!-- Contenedor del botón PayPal -->
+                    <div id="paypal-button-container-{{ libro.id }}"></div>
+
+                    <script>
+                        paypal.Buttons({
+                            createOrder: function(data, actions) {
+                                return actions.order.create({
+                                    purchase_units: [{
+                                        amount: {
+                                            value: '15.00'  // Puedes hacer dinámico con {{ libro.precio }} si lo tienes
+                                        },
+                                        description: 'Compra del libro: {{ libro.titulo }}'
+                                    }]
+                                });
+                            },
+                            onApprove: function(data, actions) {
+                                return actions.order.capture().then(function(details) {
+                                    alert('Gracias, ' + details.payer.name.given_name + '! Tu pago fue exitoso.');
+                                    document.querySelector('#form-{{ libro.id }}').submit();
+                                });
+                            },
+                            onCancel: function(data) {
+                                alert('El pago fue cancelado.');
+                            },
+                            onError: function(err) {
+                                console.error(err);
+                                alert('Ocurrió un error procesando el pago.');
+                            }
+                        }).render('#paypal-button-container-{{ libro.id }}');
+                    </script>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No tenemos libros disponibles.</p>
+{% endif %}
+
+
+{% include 'admin/pie_admin.html' %}

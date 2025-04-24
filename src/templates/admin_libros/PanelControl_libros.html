@@ -1,0 +1,180 @@
+{% include 'admin/cabecera_admin.html' %}
+
+<body class="p-4 m-0 border-0 bd-example m-0 border-0">
+    <div class="container">
+        <div class="card shadow">
+            <div class=" card-body">
+                <form action="{{ url_for('addLibro') }}" method="post">
+                    {% with messages = get_flashed_messages() %}
+
+                    {% if messages %}
+                    </br>
+                
+                    {% for messages in messages %}
+                    <div class="alert alert-primary alert-dismissible" role="alert">
+                        <strong>{{ messages }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                
+                    {% endwith %}
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" style="display: none;">
+                    <!-- Primera fila -->
+                    <!-- Título del libro -->
+                    <div class="mb-3">
+                        <label class="form-label">Título</label>
+                        <input type="text" class="form-control" name="titulo" placeholder="Ingrese el título del libro">
+                    </div>
+
+                    <!-- Autor y Editorial -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Autor</label>
+                            <input type="text" class="form-control" name="autor" placeholder="Nombre del autor">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Editorial</label>
+                            <input type="text" class="form-control" name="editorial"
+                                placeholder="Nombre de la editorial">
+                        </div>
+                    </div>
+
+                    <!-- Año y Género -->
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Año de publicación</label>
+                            <input type="number" class="form-control" name="anio_publicacion" placeholder="Ej. 2023">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label">Género</label>
+                            <input type="text" class="form-control" name="genero"
+                                placeholder="Ej. Programación, Ciencia, etc.">
+                        </div>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" name="descripcion" rows="4"
+                            placeholder="Breve sinopsis del libro"></textarea>
+                    </div>
+
+                    <!-- Imagen -->
+                    <div class="mb-3">
+                        <label class="form-label">URL de la imagen de portada</label>
+                        <input type="url" class="form-control" name="imagen"
+                            placeholder="https://ejemplo.com/imagen.jpg">
+                    </div>
+
+                    <!-- Botón -->
+                    <div class="d-grid">
+                        <button class="btn btn-success" type="submit">Guardar libro</button>
+                    </div>
+                </form>
+
+                <!--#Tabla-->
+                <div class="container mt-5">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover align-middle shadow-sm text-center">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Título</th>
+                                    <th>Autor</th>
+                                    <th>Editorial</th>
+                                    <th>Año</th>
+                                    <th>Género</th>
+                                    <th>Descripción</th>
+                                    <th>Imagen</th>
+                                    <th>Editar</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for libro in libros %}
+                                <tr>
+                                    <td>{{ libro.id }}</td>
+                                    <td>{{ libro.titulo }}</td>
+                                    <td>{{ libro.autor }}</td>
+                                    <td>{{ libro.editorial }}</td>
+                                    <td>{{ libro.anio_publicacion }}</td>
+                                    <td>{{ libro.genero }}</td>
+                                    <td class="text-start">{{ libro.descripcion }}</td>
+                                    <td>
+                                        {% if libro.imagen %}
+                                            <img src="{{ libro.imagen }}" alt="Portada" style="width: 60px; height: auto;">
+                                        {% else %}
+                                            <span class="text-muted">Sin imagen</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#modalEdit{{ libro.id }}">Editar</button>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('delete', id = libro.id) }}" class="btn btn-outline-danger btn-sm">Eliminar</a>
+                                    </td>
+                                </tr>
+                
+                                <!-- Modal para editar libro -->
+                                <div class="modal fade" id="modalEdit{{ libro.id }}" tabindex="-1"
+                                    aria-labelledby="modalLabel{{ libro.id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <form action="/edit/{{ libro.id }}" method="post">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                <div class="modal-header bg-primary text-white">
+                                                    <h5 class="modal-title" id="modalLabel{{ libro.id }}">Editar Libro ID {{ libro.id }}</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body row g-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Título</label>
+                                                        <input type="text" class="form-control" name="titulo" value="{{ libro.titulo }}">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Autor</label>
+                                                        <input type="text" class="form-control" name="autor" value="{{ libro.autor }}">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Editorial</label>
+                                                        <input type="text" class="form-control" name="editorial" value="{{ libro.editorial }}">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Año de publicación</label>
+                                                        <input type="number" class="form-control" name="anio_publicacion" value="{{ libro.anio_publicacion }}">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Género</label>
+                                                        <input type="text" class="form-control" name="genero" value="{{ libro.genero }}">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">URL Imagen</label>
+                                                        <input type="text" class="form-control" name="imagen" value="{{ libro.imagen }}">
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label class="form-label">Descripción</label>
+                                                        <textarea class="form-control" name="descripcion" rows="3">{{ libro.descripcion }}</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Guardar cambios</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{% include 'admin/pie_admin.html' %}

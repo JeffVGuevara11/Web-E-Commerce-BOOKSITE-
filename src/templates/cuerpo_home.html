@@ -1,0 +1,116 @@
+<!-- Hero Banner -->
+<section class="hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Bienvenido a BookSite</h1>
+        <p class="lead">Tu destino para explorar, descubrir y disfrutar los mejores libros.</p>
+    </div>
+</section>
+
+<!-- Libros en Tendencia -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="section-title"><i class="fas fa-fire text-warning"></i> Libros en Tendencia</h2>
+        <div id="carouselLibros" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://estaticos-cdn.prensaiberica.es/clip/39e6036b-04d3-4e5c-85f7-a5f5b59fcfb6_source-aspect-ratio_default_0.jpg" class="d-block w-100 rounded"
+                        alt="Libro 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://img2.rtve.es/i/?w=1600&i=1685706742077.jpg"
+                        class="d-block w-100 rounded" alt="Libro 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://pekeleke.es/wp-content/uploads/2022/05/libros_para_ninos_12_anos.jpg"
+                        class="d-block w-100 rounded" alt="Libro 3">
+                </div>
+                <div class="carousel-item active">
+                    <img src="https://cloudfront-us-east-1.images.arcpublishing.com/infobae/TP5EIBDQNZF55JVYWVWGWK57XI.jpg" class="d-block w-100 rounded"
+                        alt="Libro 4">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselLibros" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselLibros" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </div>
+</section>  
+
+<!-- Categorías destacadas -->
+<section class="py-4 bg-dark">
+    <div class="container text-center">
+        <h2 class="section-title text-white">Categorías Destacadas</h2>
+        <div class="row g-6">
+            <!-- Categoría Fantasía -->
+            <div class="col-md-4 d-flex align-items-stretch">
+                <form action="{{ url_for('categorialibros') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="categoria" value="Fantasía">
+                    <button type="submit" class="category-card p-4 w-100 text-start border-0 bg-transparent" style="all: unset; cursor: pointer; display: block;">
+                        <div class="card category-card p-4 d-flex flex-column" style="height: 100%;">
+                            <i class="fas fa-dragon fa-2x mb-3 text-info"></i>
+                            <h5 class="fw-bold">Fantasía</h5>
+                            <p>Explora mundos mágicos y aventuras épicas.</p>
+                        </div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Categoría Ciencia y Conocimiento -->
+            <div class="col-md-4 d-flex align-items-stretch">
+                <form action="{{ url_for('categorialibros') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="categoria" value="Tecnología y Ciencia">
+                    <button type="submit" class="category-card p-4 w-100 text-start border-0 bg-transparent" style="all: unset; cursor: pointer; display: block;">
+                        <div class="card category-card p-4 d-flex flex-column" style="height: 100%;">
+                            <i class="fas fa-microchip fa-2x mb-3 text-info"></i>
+                            <h5 class="fw-bold">Ciencia y Conocimiento</h5>
+                            <p>Descubre el mundo con libros informativos.</p>
+                        </div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Categoría Infantil -->
+            <div class="col-md-4 d-flex align-items-stretch">
+                <form action="{{ url_for('categorialibros') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="categoria" value="Infantil">
+                    <button type="submit" class="category-card p-4 w-100 text-start border-0 bg-transparent" style="all: unset; cursor: pointer; display: block;">
+                        <div class="card category-card p-4 d-flex flex-column" style="height: 100%;">
+                            <i class="fas fa-book-open fa-2x mb-3 text-success"></i>
+                            <h5 class="fw-bold">Infantil</h5>
+                            <p>Libros educativos para los más pequeños.</p>
+                        </div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección adicional -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="section-title">¿Por qué elegirnos?</h2>
+        <p class="lead">Amplia selección, recomendaciones personalizadas, y descargas rápidas. Nos apasiona llevar
+            historias a tus manos.</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-4 text-center">
+    <div class="container">
+        <p class="mb-2">Síguenos en nuestras redes sociales</p>
+        <div class="social-icons mb-3">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-x-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p class="mb-0">&copy; 2025 BookStore. Todos los derechos reservados.</p>
+    </div>
+</footer>
